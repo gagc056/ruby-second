@@ -1,4 +1,5 @@
 #frozen_string_literal: true
+
 module Enumerable
   def my_each
     i = 0
@@ -78,7 +79,7 @@ module Enumerable
 
   def my_map
     return to_enum :my_map unless block_given?
-    new_array = []
+    arr = []
     my_each { |item| arr << yield(item) }
     new_array
   end
