@@ -1,6 +1,7 @@
+#frozen_string_literal: true
 module Enumerable
   def my_each
-    i=0
+    i = 0
     begin
       yield (self[i])
       i += 1
@@ -51,11 +52,10 @@ module Enumerable
     false
   end
 
-
   def my_none
     i = 0
     begin
-      if (yield(self[i]))
+      if yield(self[i])
         return false
       end
       i += 1
@@ -63,11 +63,11 @@ module Enumerable
     true
   end
 
-  def my_count()
+  def my_count
     count = 0
     if block_given?
       for i in 0..self.size - 1
-        if(yield(self[i]))
+        if yield(self[i])
           count += 1
         else
           next
