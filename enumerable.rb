@@ -36,6 +36,7 @@ module Enumerable
     begin
       if yield(self[i]) == false || yield(self[i]) == nil
         return false
+
       end
       i += 1
     end until i < self.size
@@ -47,6 +48,7 @@ module Enumerable
     begin
       if yield(self[i])
         return true
+
       end
       i += 1
     end until i < self.size
@@ -58,6 +60,7 @@ module Enumerable
     begin
       if yield(self[i])
         return false
+
       end
       i += 1
     end until i < self.size
