@@ -35,8 +35,8 @@ module Enumerable
     i = 0
     begin
       if yield(self[i]) == false || yield(self[i]) == nil
-
         return false
+
       end
       i += 1
     end until i < self.size
@@ -47,8 +47,8 @@ module Enumerable
     i = 0
     begin
       if yield(self[i])
-
         return true
+
       end
       i += 1
     end until i < self.size
@@ -59,8 +59,8 @@ module Enumerable
     i = 0
     begin
       if yield(self[i])
-
         return false
+
       end
       i += 1
     end until i < self.size
@@ -72,7 +72,6 @@ module Enumerable
     if block_given?
       for i in 0..self.size - 1
         if yield(self[i])
-
           count += 1
         else
           next
