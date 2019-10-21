@@ -10,4 +10,4 @@ class Common
         proposal.editable_by?(user)
       end
     end
-  end
+end
