@@ -7,7 +7,6 @@ module Enumerable
       yield (self[i])
       i += 1
     end
-    self
   end
 
   def my_each_with_index
@@ -16,7 +15,6 @@ module Enumerable
       yield (self[index])
       i += 1
     end
-    self
   end
 
   def my_select
@@ -45,8 +43,7 @@ module Enumerable
   def my_any?
     i = 0
     while i < self.size
-      if yield(self[i])
-        return true
+      return true if yield(self[i])
       end
       i += 1
     end
@@ -56,8 +53,7 @@ module Enumerable
   def my_none
     i = 0
     while  i < self.size
-      if yield(self[i])
-        return false
+      return false if yield(self[i])
       end
       i += 1
     end
