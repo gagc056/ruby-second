@@ -15,7 +15,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    self.my_each { |i,x| yield  i, x}
+    self.my_each { |i, x| yield  i, x }
   end
 
   def my_select
@@ -46,7 +46,7 @@ module Enumerable
   end
 
   def my_count(item=:NONE)
-    is_item = lambda { |x| item==:NONE or item==x }
+    is_item = lambda { |x| item == :NONE or item == x }
     is_match = lambda { |x| block_given? ? yield(x) : is_item.call(x) }
 
     self.my_inject(0) { |count, x| is_match.call(x) ? count + 1 : count }
@@ -63,7 +63,7 @@ module Enumerable
 
   def my_inject(initial=nil, symbol=nil)
 
-    (initial, symbol = symbol, initial) if not block_given? and symbol === nil
+    (initial, symbol = symbol, initial) if NOT block_given? && symbol === nil
 
     enumera = self.my_each
     result = initial || enumera.next
@@ -72,3 +72,5 @@ module Enumerable
     result
   end
 end
+
+
