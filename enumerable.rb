@@ -1,105 +1,74 @@
 # frozen_string_literal: true
 
+# frozen_string_literal: true
+
 module Enumerable
   def my_each
+    return to_enum :my_each unless block_given?
+
+    check_self = is_a?(Range) ? to_a : self
     i = 0
-    while  i < self.size
-      yield (self[i])
+    while i < check_self.length
+      yield(check_self[i])
       i += 1
     end
   end
 
   def my_each_with_index
-    index = 0
-    while i < self.size
-      yield (self[index])
-      i += 1
-    end
+    self.my_each { |i,x| yield  i, x}
   end
 
   def my_select
-    i = 0
-    arr = []
-    while  i < self.size
-      if yield(self[i]) == true
-        new_array << self[i]
-      end
-      i += 1
-    end
-    arr
+    return enum_for :my_select unless block_given?
+
+    Enumerator.new do |y|
+
+      self.my_each { |item| y << item if yield item }
+    end.to_a
   end
 
   def my_all?
-    i = 0
-    while i < self.size
-      if yield(self[i]) == false || yield(self[i]) == nil
-        return false
-      end
-      i += 1
-    end
+    self.my_each { |x| return false unless block_given? ? yield(x) : x }
+
     true
   end
 
   def my_any?
-    i = 0
-    while i < self.size
-      return true if yield(self[i])
-      end
-      i += 1
-    end
+    self.my_each { |x| return true if block_given? ? yield(x) : x }
+
     false
   end
 
-  def my_none?(param = nil, &block)
-    !my_any?(param, &block)
+  def my_none?
+    self.my_each { |x| return false if block_given? ? yield(x) : x }
+
+    true
   end
 
-  def my_count
-    count = 0
-    if block_given?
-      for i in 0..self.size - 1
-        if yield(self[i])
-          count += 1
-        else
-          next
-        end
-      end
-    end
+  def my_count(item=:NONE)
+    is_item = lambda { |x| item==:NONE or item==x }
+    is_match = lambda { |x| block_given? ? yield(x) : is_item.call(x) }
+
+    self.my_inject(0) { |count, x| is_match.call(x) ? count + 1 : count }
   end
+
 
   def my_map
     return to_enum :my_map unless block_given?
+
     arr = []
     my_each { |item| arr << yield(item) }
-    new_array
+    arr
   end
 
-  def my_inject(first = nil, second = nil)
-    check_self = is_a?(Range) ? to_a : self
-    accumulator = first.nil? || first.is_a?(Symbol) ? check_self[0] : first
-    if block_given? && first
-      check_self[0..-1].my_each do |item|
-        accumulator = yield(accumulator, item)
-      end
-    end
+  def my_inject(initial=nil, symbol=nil)
 
-    if block_given? && !first
-      check_self[1..-1].my_each do |item|
-        accumulator = yield(accumulator, item)
-      end
-    end
+    (initial, symbol = symbol, initial) if not block_given? and symbol === nil
 
-    if first.is_a?(Symbol)
-      check_self[1..-1].my_each do |i|
-        accumulator = accumulator.send(first, i)
-      end
-    end
+    enumera = self.my_each
+    result = initial || enumera.next
 
-    if second
-      check_self[0..-1].my_each do |i|
-        accumulator = accumulator.send(second, i)
-      end
-    end
-    accumulator
+    loop { result = block_given? ? yield(result, enumera.next) : result.send(symbol, enumera.next) }
+    result
   end
 end
