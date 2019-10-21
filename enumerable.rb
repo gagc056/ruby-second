@@ -50,14 +50,8 @@ module Enumerable
     false
   end
 
-  def my_none
-    i = 0
-    while  i < self.size
-      return false if yield(self[i])
-      end
-      i += 1
-    end
-    true
+  def my_none?(param = nil, &block)
+    !my_any?(param, &block)
   end
 
   def my_count
