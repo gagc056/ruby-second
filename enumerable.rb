@@ -56,7 +56,7 @@ module Enumerable
     my_each { |item| arr << yield(item) }
   end
 
-  def my_inject(initial=nil, symbol=nil)
+  def my_inject(initial = nil, symbol = nil)
     (initial, symbol = symbol, initial) if NOT block_given? && symbol == nil
 
     enumera = self.my_each
