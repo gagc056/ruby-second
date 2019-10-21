@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
     return to_enum :my_each unless block_given?
@@ -45,11 +43,11 @@ module Enumerable
     true
   end
 
-  def my_count(item=:NONE)
+  def my_count(item = :NONE)
     is_item = lambda { |x| item == :NONE || item == x }
     is_match = lambda { |x| block_given? ? yield(x) : is_item.call(x) }
 
-    self.my_inject(0) { |count, x| is_match.call(x) ? count + 1 : count }
+    self.my_inject(0) { |count, x| is_match.call (x) ? count + 1 : count }
   end
 
 
