@@ -20,7 +20,6 @@ module Enumerable
     return enum_for :my_select unless block_given?
 
     Enumerator.new do |y|
-
       self.my_each { |item| y << item if yield item }
     end.to_a
   end
@@ -50,7 +49,6 @@ module Enumerable
     self.my_inject(0) { |count, x| is_match.call (x) ? count + 1 : count }
   end
 
-
   def my_map
     return to_enum :my_map unless block_given?
 
@@ -59,7 +57,7 @@ module Enumerable
   end
 
   def my_inject(initial=nil, symbol=nil)
-    (initial, symbol = symbol, initial) if NOT block_given? && symbol === nil
+    (initial, symbol = symbol, initial) if NOT block_given? && symbol == nil
 
     enumera = self.my_each
     result = initial || enumera.next
