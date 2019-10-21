@@ -101,4 +101,5 @@ module Enumerable
       end
     end
     accumulator
+  end
 end
