@@ -69,7 +69,6 @@ module Enumerable
 
   def my_map
     return to_enum :my_map unless block_given?
-
     arr = []
     my_each { |item| arr << yield(item) }
     new_array
@@ -102,5 +101,4 @@ module Enumerable
       end
     end
     accumulator
-  end
 end
