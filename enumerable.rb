@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 module Enumerable
   def my_each
     return to_enum :my_each unless block_given?
@@ -48,9 +46,8 @@ module Enumerable
     is_item = lambda { |x| item == :NONE || item == x }
     is_match = lambda { |x| block_given? ? yield(x) : is_item.call(x) }
 
-    self.my_inject(0) { |count, x| is_match.call(x) ? count + 1 : count }
+    self.my_inject(0) { |count, x| is_match.call (x) ? count + 1 : count }
   end
-
 
   def my_map
     return to_enum :my_map unless block_given?
@@ -59,6 +56,7 @@ module Enumerable
     my_each { |item| arr << yield(item) }
   end
 
+<<<<<<< HEAD
   def my_inject(*args)
     arr = to_a.dup
     if args[0].nil?
@@ -72,6 +70,15 @@ module Enumerable
       operand = args[0]
       symbol = args[1]
     end
+=======
+  def my_inject(initial = nil, symbol = nil)
+    (initial, symbol = symbol, initial) if NOT block_given? && symbol == nil
+
+    enumera = self.my_each
+    result = initial || enumera.next
+
+    loop { result = block_given? ? yield(result, enumera.next) : result.send(symbol, enumera.next) }
+>>>>>>> ca0d8e970cfd5c0427e7fd498dabd2570d3e596e
 
     arr[0..-1].my_each do |i|
       if symbol
