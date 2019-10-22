@@ -38,7 +38,7 @@ module Enumerable
   end
 
   def my_none?
-    my_any? { |x| return false if block_given? ? yield(x) : x }
+    my_each { |x| return false if block_given? ? yield(x) : x }
 
     true
   end
@@ -46,11 +46,11 @@ module Enumerable
   def my_count(item = nil)
     count = 0
     if block_given?
-      my_each { |i| count += 1 if yield(i) == true }
+      my_each { |x| count += 1 if yield(i) == true }
     elsif item.nil?
       my_each { count += 1 }
     else
-      my_each { |i| count += 1 if i == item }
+      my_each { |x| count += 1 if i == item }
     end
     count
   end
@@ -62,27 +62,15 @@ module Enumerable
     my_each { |item| arr << yield(item) }
   end
 
-  def my_inject(*args)
-    arr = to_a.dup
-    if args[0].nil?
-      operand = arr.shift
-    elsif args[1].nil? && !block_given?
-      symbol = args[0]
-      operand = arr.shift
-    elsif args[1].nil? && block_given?
-      operand = args[0]
-    else
-      operand = args[0]
-      symbol = args[1]
-    end
-
-    arr[0..-1].my_each do |i|
-      if symbol
-        operand = operand.send(symbol, i)
-      else
-        yield(operand, i)
-      end
-    end
-    operand
+  def my_inject(initial = nil)
+		initial = self[0] if initial.nil?
+		first = initial
+		self.my_each { |x| first = yield(first, x) }
+		first
   end
+end
+
+
+def multiply_els array
+	array.my_inject(1) { |product, element| product * element }
 end
