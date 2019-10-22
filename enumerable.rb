@@ -46,11 +46,11 @@ module Enumerable
   def my_count(item = nil)
     count = 0
     if block_given?
-      my_each { |x| count += 1 if yield(i) == true }
+      my_each { |i| count += 1 if yield(i) == true }
     elsif item.nil?
       my_each { count += 1 }
     else
-      my_each { |x| count += 1 if i == item }
+      my_each { |i| count += 1 if i == item }
     end
     count
   end
@@ -66,11 +66,10 @@ module Enumerable
 		initial = self[0] if initial.nil?
 		first = initial
 		self.my_each { |x| first = yield(first, x) }
-		first
+		memo
   end
 end
 
-
 def multiply_els array
-	array.my_inject(1) { |product, element| product * element }
+	array.my_inject(1) { |product, x| product * x }
 end
