@@ -13,26 +13,29 @@ module Enumerable
   end
 
   def my_each_with_index
-    arr = []
-    arr.my_each { |i, x| yield  i, x }
+
+    my_each { |i, x| yield  i, x }
+    self
+
   end
 
   def my_select
     return enum_for :my_select unless block_given?
 
+
     Enumerator.new do |y|
-      self.my_each { |item| y << item if yield item }
+      my_each { |item| y << item if yield item }
     end.to_a
   end
 
   def my_all?
-    self.my_each { |x| return false unless block_given? ? yield(x) : x }
+    my_each { |x| return false unless block_given? ? yield(x) : x }
 
     true
   end
 
   def my_any?
-    self.my_each { |x| return true if block_given? ? yield(x) : x }
+    my_each { |x| return true if block_given? ? yield(x) : x }
 
     false
   end
