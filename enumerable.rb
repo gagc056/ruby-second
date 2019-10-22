@@ -13,7 +13,8 @@ module Enumerable
   end
 
   def my_each_with_index
-    self.my_each { |i, x| yield  i, x }
+    arr = []
+    arr.my_each { |i, x| yield  i, x }
   end
 
   def my_select
@@ -42,11 +43,16 @@ module Enumerable
     true
   end
 
-  def my_count(item = :NONE)
-    is_item = lambda { |x| item == :NONE || item == x }
-    is_match = lambda { |x| block_given? ? yield(x) : is_item.call(x) }
-
-    self.my_inject(0) { |count, x| is_match.call (x) ? count + 1 : count }
+  def my_count(item = nil)
+    count = 0
+    if block_given?
+      my_each { |i| count += 1 if yield(i) == true }
+    elsif item.nil?
+      my_each { count += 1 }
+    else
+      my_each { |i| count += 1 if i == item }
+    end
+    count
   end
 
   def my_map
@@ -69,6 +75,7 @@ module Enumerable
       operand = args[0]
       symbol = args[1]
     end
+
     arr[0..-1].my_each do |i|
       if symbol
         operand = operand.send(symbol, i)
