@@ -69,7 +69,6 @@ module Enumerable
       operand = args[0]
       symbol = args[1]
     end
-
     arr[0..-1].my_each do |i|
       if symbol
         operand = operand.send(symbol, i)
