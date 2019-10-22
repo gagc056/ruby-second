@@ -13,7 +13,7 @@ module Enumerable
   end
 
   def my_each_with_index
-    my_each { |i, x| yield  i, x }
+    my_each { |i, x| yield i, x }
     self
   end
 
@@ -38,7 +38,7 @@ module Enumerable
   end
 
   def my_none?
-    !my_any? { |x| return false if block_given? ? yield(x) : x }
+    my_any? { |x| return false if block_given? ? yield(x) : x }
 
     true
   end
