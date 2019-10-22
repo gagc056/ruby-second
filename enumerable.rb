@@ -13,15 +13,12 @@ module Enumerable
   end
 
   def my_each_with_index
-
     my_each { |i, x| yield  i, x }
     self
-
   end
 
   def my_select
     return enum_for :my_select unless block_given?
-
 
     Enumerator.new do |y|
       my_each { |item| y << item if yield item }
@@ -41,7 +38,7 @@ module Enumerable
   end
 
   def my_none?
-    self.my_each { |x| return false if block_given? ? yield(x) : x }
+    !my_any? { |x| return false if block_given? ? yield(x) : x }
 
     true
   end
