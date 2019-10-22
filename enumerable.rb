@@ -65,7 +65,7 @@ module Enumerable
   def my_inject(initial = nil)
     initial = self[0] if initial.nil?
     first = initial
-    self.my_each { |x| first = yield(first, x) }
+    my_each { |x| first = yield(first, x) }
     first
   end
 end
