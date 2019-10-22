@@ -56,7 +56,7 @@ module Enumerable
     my_each { |item| arr << yield(item) }
   end
 
-<<<<<<< HEAD
+
   def my_inject(*args)
     arr = to_a.dup
     if args[0].nil?
@@ -70,7 +70,7 @@ module Enumerable
       operand = args[0]
       symbol = args[1]
     end
-=======
+
   def my_inject(initial = nil, symbol = nil)
     (initial, symbol = symbol, initial) if NOT block_given? && symbol == nil
 
@@ -78,7 +78,6 @@ module Enumerable
     result = initial || enumera.next
 
     loop { result = block_given? ? yield(result, enumera.next) : result.send(symbol, enumera.next) }
->>>>>>> ca0d8e970cfd5c0427e7fd498dabd2570d3e596e
 
     arr[0..-1].my_each do |i|
       if symbol
