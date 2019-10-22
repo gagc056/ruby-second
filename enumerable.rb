@@ -22,7 +22,6 @@ module Enumerable
     return enum_for :my_select unless block_given?
 
     Enumerator.new do |y|
-
       self.my_each { |item| y << item if yield item }
     end.to_a
   end
@@ -45,7 +44,7 @@ module Enumerable
     true
   end
 
-  def my_count(item=:NONE)
+  def my_count(item = :NONE)
     is_item = lambda { |x| item == :NONE || item == x }
     is_match = lambda { |x| block_given? ? yield(x) : is_item.call(x) }
 
@@ -60,14 +59,27 @@ module Enumerable
     my_each { |item| arr << yield(item) }
   end
 
-  def my_inject(initial=nil, symbol=nil)
-    (initial, symbol = symbol, initial) if NOT block_given? && symbol === nil
+  def my_inject(*args)
+    arr = to_a.dup
+    if args[0].nil?
+      operand = arr.shift
+    elsif args[1].nil? && !block_given?
+      symbol = args[0]
+      operand = arr.shift
+    elsif args[1].nil? && block_given?
+      operand = args[0]
+    else
+      operand = args[0]
+      symbol = args[1]
+    end
 
-    enumera = self.my_each
-    result = initial || enumera.next
-
-    loop { result = block_given? ? yield(result, enumera.next) : result.send(symbol, enumera.next) }
-
-    result
+    arr[0..-1].my_each do |i|
+      if symbol
+        operand = operand.send(symbol, i)
+      else
+        yield(operand, i)
+      end
+    end
+    operand
   end
 end
