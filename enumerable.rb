@@ -2,12 +2,9 @@
 
 module Enumerable
   def my_each
-    return to_enum :my_each unless block_given?
-
-    check_self = is_a?(Range) ? to_a : self
     i = 0
     while i < check_self.length
-      yield(check_self[i])
+      yield check_self[i]
       i += 1
     end
   end
@@ -32,14 +29,14 @@ module Enumerable
   end
 
   def my_any?
-    my_each { |x| return true if block_given? ? yield(x) : x }
-
+    my_each { |item| return true if block_given? ? yield(item) : item }
     false
   end
 
   def my_none?
-    my_each { |x| return false if block_given? ? yield(x) : x }
-
+    my_each do |item|
+      return false if block_given? ? yield(item) : item
+    end
     true
   end
 
