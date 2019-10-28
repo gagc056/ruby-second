@@ -22,12 +22,12 @@ module Enumerable
     end.to_a
   end
 
-  def my_all?(intial = nil)
+  def my_all?(initial = nil)
     result = true
     if block_given?
       my_each { |element| result &= (yield element) }
     elsif initial
-      my_each { |element| result &= initial == element }
+      my_each { |element| result &= initial === element }
     else
       my_each { |element| result &= element }
     end
