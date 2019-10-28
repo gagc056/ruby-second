@@ -2,7 +2,6 @@
 
 module Enumerable
   def my_each
-
     i = 0
     while i < check_self.length
       yield check_self[i]
@@ -28,7 +27,7 @@ module Enumerable
     if block_given?
       my_each { |element| result &= (yield element) }
     elsif initial
-      my_each { |element| result &= pattern == element }
+      my_each { |element| result &= initial == element }
     else
       my_each { |element| result &= element }
     end
