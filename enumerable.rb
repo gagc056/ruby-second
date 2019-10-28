@@ -27,7 +27,7 @@ module Enumerable
     if block_given?
       my_each { |element| result &= (yield element) }
     elsif initial
-      my_each { |element| result &= initial === element }
+      my_each { |element| result &= initial == element }
     else
       my_each { |element| result &= element }
     end
