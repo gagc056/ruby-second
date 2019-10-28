@@ -2,6 +2,7 @@
 
 module Enumerable
   def my_each
+
     i = 0
     while i < check_self.length
       yield check_self[i]
@@ -22,10 +23,16 @@ module Enumerable
     end.to_a
   end
 
-  def my_all?
-    my_each { |x| return false unless block_given? ? yield(x) : x }
-
-    true
+  def my_all?(intial = nil)
+    result = true
+    if block_given?
+      my_each { |element| result &= (yield element) }
+    elsif initial
+      my_each { |element| result &= pattern == element }
+    else
+      my_each { |element| result &= element }
+    end
+    result
   end
 
   def my_any?
@@ -56,7 +63,8 @@ module Enumerable
     return to_enum :my_map unless block_given?
 
     arr = []
-    my_each { |item| arr << yield(item) }
+    my_each { |element| arr << (yield element) }
+    arr
   end
 
   def my_inject(initial = nil)
