@@ -10,7 +10,13 @@ module Enumerable
   end
 
   def my_each_with_index
-    my_each { |i, x| yield i, x }
+    return to_enum :my_each_with_index unless block_given?
+
+    i = 0
+    my_each do |element|
+      yield element, i
+      i += 1
+    end
     self
   end
 
@@ -66,41 +72,17 @@ module Enumerable
     arr
   end
 
-  def my_inject(object = 1, sbl = nil)
-    array = if instance_of? Range
-              to_a
-            else
-              self
-            end
+def my_inject(acc = nil, cur = nil)
+    tmp = is_a?(Range) ? to_a : self
+    a = acc.nil? || acc.is_a?(Symbol) ? tmp[0] : acc
     if block_given?
-      array.unshift(object) if object != 1
-
-      accumulator = array[0]
-      (1..array.length - 1).each do |i|
-        accumulator = yield(accumulator, array[i])
-      end
-      accumulator
-    else
-      if object.class == Symbol
-        accumulator = array[0]
-        (1..array.length - 1).each do |i|
-          accumulator = accumulator.send(object, array[i])
-        end
-        return accumulator
-      end
-      if (object.class == Integer) && (sbl.class == Symbol)
-
-        array.unshift(object) if object != 1
-
-        accumulator = array[0]
-        (1..array.length - 1).each do |i|
-          accumulator = accumulator.send(sbl, array[i])
-        end
-        return accumulator
-      end
+      start = acc ? 0 : 1
+      tmp[start..-1].my_each { |e| a = yield(a, e) }
     end
+    tmp[1..-1].my_each { |e| a = a.send(acc, e) } if acc.is_a?(Symbol)
+    tmp[0..-1].my_each { |e| a = a.send(cur, e) } if cur
+    a
   end
-end
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, x| product * x }
