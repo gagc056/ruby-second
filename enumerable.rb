@@ -23,11 +23,11 @@ module Enumerable
     end.to_a
   end
 
-  def my_all?(intial = nil)
+  def my_all?(pattern = nil)
     result = true
     if block_given?
       my_each { |element| result &= (yield element) }
-    elsif initial
+    elsif pattern
       my_each { |element| result &= pattern == element }
     else
       my_each { |element| result &= element }
@@ -67,30 +67,7 @@ module Enumerable
     arr
   end
 
-  def my_inject(*args)
-    arr = to_a.dup
-    if args[0].nil?
-      operand = arr.shift
-    elsif args[1].nil? && !block_given?
-      symbol = args[0]
-      operand = arr.shift
-    elsif args[1].nil? && block_given?
-      operand = args[0]
-    else
-      operand = args[0]
-      symbol = args[1]
-    end
-
-    arr[0..-1].my_each do |i|
-      if symbol
-        operand = operand.send(symbol, i)
-      else
-        yield(operand, i)
-      end
-    end
-    operand
-  end
-end
+ 
 
 def multiply_els(arr)
   arr.my_inject(1) { |product, x| product * x }
