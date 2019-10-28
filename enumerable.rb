@@ -102,6 +102,7 @@ module Enumerable
     end
   end
 end
+
 def multiply_els(arr)
   arr.my_inject(1) { |product, x| product * x }
 end
