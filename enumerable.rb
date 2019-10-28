@@ -2,6 +2,7 @@
 
 module Enumerable
   def my_each
+
     i = 0
     while i < check_self.length
       yield check_self[i]
@@ -22,12 +23,12 @@ module Enumerable
     end.to_a
   end
 
-  def my_all?(initial = nil)
+  def my_all?(intial = nil)
     result = true
     if block_given?
       my_each { |element| result &= (yield element) }
     elsif initial
-      my_each { |element| result &= initial == element }
+      my_each { |element| result &= pattern == element }
     else
       my_each { |element| result &= element }
     end
@@ -66,11 +67,28 @@ module Enumerable
     arr
   end
 
-  def my_inject(initial = nil)
-    initial = self[0] if initial.nil?
-    first = initial
-    my_each { |x| first = yield(first, x) }
-    first
+  def my_inject(*args)
+    arr = to_a.dup
+    if args[0].nil?
+      operand = arr.shift
+    elsif args[1].nil? && !block_given?
+      symbol = args[0]
+      operand = arr.shift
+    elsif args[1].nil? && block_given?
+      operand = args[0]
+    else
+      operand = args[0]
+      symbol = args[1]
+    end
+
+    arr[0..-1].my_each do |i|
+      if symbol
+        operand = operand.send(symbol, i)
+      else
+        yield(operand, i)
+      end
+    end
+    operand
   end
 end
 
