@@ -28,7 +28,7 @@ module Enumerable
     end.to_a
   end
 
-  def my_all?(intial = nil)
+  def my_all?(initial = nil)
     result = true
     if block_given?
       my_each { |element| result &= (yield element) }
@@ -83,7 +83,6 @@ module Enumerable
     tmp[0..-1].my_each { |e| a = a.send(cur, e) } if cur
     a
   end
-
 end
 
 def multiply_els(arr)

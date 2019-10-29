@@ -5,7 +5,7 @@ AllCops:
       Max: 120
       Metrics/MethodLength:
         Include: ["app/controllers/*"]
-        Max: 20
+        Max: 140
         Metrics/AbcSize:
           Include: ["app/controllers/*"]
           Max: 30
