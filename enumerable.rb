@@ -2,7 +2,6 @@
 
 module Enumerable
   def my_each
-
     i = 0
     while i < check_self.length
       yield check_self[i]
@@ -11,7 +10,13 @@ module Enumerable
   end
 
   def my_each_with_index
-    my_each { |i, x| yield i, x }
+    return to_enum :my_each_with_index unless block_given?
+
+    i = 0
+    my_each do |element|
+      yield element, i
+      i += 1
+    end
     self
   end
 
@@ -67,11 +72,16 @@ module Enumerable
     arr
   end
 
-  def my_inject(initial = nil)
-    initial = self[0] if initial.nil?
-    first = initial
-    my_each { |x| first = yield(first, x) }
-    first
+  def my_inject(acc = nil, cur = nil)
+    tmp = is_a?(Range) ? to_a : self
+    a = acc.nil? || acc.is_a?(Symbol) ? tmp[0] : acc
+    if block_given?
+      start = acc ? 0 : 1
+      tmp[start..-1].my_each { |e| a = yield(a, e) }
+    end
+    tmp[1..-1].my_each { |e| a = a.send(acc, e) } if acc.is_a?(Symbol)
+    tmp[0..-1].my_each { |e| a = a.send(cur, e) } if cur
+    a
   end
 end
 
