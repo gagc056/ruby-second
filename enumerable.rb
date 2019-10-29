@@ -83,6 +83,7 @@ module Enumerable
     tmp[0..-1].my_each { |e| a = a.send(cur, e) } if cur
     a
   end
+
 end
 
 def multiply_els(arr)
